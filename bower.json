@@ -1,0 +1,22 @@
+{
+  "name": "mathoms",
+  "version": "0.0.0",
+  "homepage": "https://github.com/FleetNavTech/mathoms",
+  "authors": [
+    "Andrew Clinton <ddrew.clinton@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.4",
+    "angular-ui-router": "~0.2.15",
+    "bootstrap-sass-official": "bootstrap-sass-official#~3.3.5",
+    "font-awesome": "fontawesome#~4.4.0"
+  }
+}
