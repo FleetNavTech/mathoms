@@ -315,6 +315,53 @@ maxFrac:2,minFrac:2,minInt:1,negPre:"-\u00a4",negSuf:"",posPre:"\u00a4",posSuf:"
 	'use strict';
 
 	angular
+	.module('app.config', [])
+	.config(Config);
+
+	Config.$inject = ["$stateProvider", "$urlRouterProvider"];
+
+	function Config ($stateProvider, $urlRouterProvider) {
+		$stateProvider
+
+		.state('app', {
+			url: '',
+			abstract: true,
+			templateUrl: 'app/templates/base.html',
+			controller: 'BaseCtrl as Base'
+		})
+
+		.state('app.login', {
+			url: '/login',
+			templateUrl: 'app/templates/login.html',
+			controller: 'LoginCtrl as Login'
+		})
+
+		// if none of the above states are matched, use this as the fallback
+        $urlRouterProvider.otherwise('/login');
+	}
+})();
+(function () {
+	'use strict';
+
+	angular.module('app', ['ui.router', 'app.run', 'app.config', 'app.controllers', 'app.factories', 'app.services']);
+})();
+(function() {
+    'use strict';
+    angular
+        .module('app.run', [])
+        .run(run);
+
+    run.$inject = ['$rootScope'];
+
+    function run($rootScope) {
+       
+    }
+})();
+
+(function () {
+	'use strict';
+
+	angular
 	.module('app.controller.base', [])
 	.controller('BaseCtrl', Controller);
 
@@ -349,50 +396,4 @@ maxFrac:2,minFrac:2,minInt:1,negPre:"-\u00a4",negSuf:"",posPre:"\u00a4",posSuf:"
 (function () {
 	'use strict';
 	angular.module('app.services', []);
-})();
-(function () {
-	'use strict';
-
-	angular
-	.module('app.config', [])
-	.config(Config);
-
-	Config.$inject = ["$stateProvider", "$urlRouterProvider"];
-
-	function Config ($stateProvider, $urlRouterProvider) {
-		$stateProvider
-
-		.state('app', {
-			url: '/app',
-			abstract: true,
-			templateUrl: 'app/templates/base.html',
-			controller: 'BaseCtrl as Base'
-		})
-
-		.state('app.login', {
-			url: '/login',
-			templateUrl: 'app/templates/login.html',
-			controller: 'LoginCtrl as Login'
-		})
-
-		// if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/login');
-	}
-})();
-(function () {
-	'use strict';
-
-	angular.module('app', ['ui.router', 'app.run', 'app.config', 'app.controllers', 'app.factories', 'app.services']);
-})();
-(function() {
-    'use strict';
-    angular
-        .module('app.run', [])
-        .run(run);
-
-    run.$inject = ['$rootScope'];
-
-    function run($rootScope) {
-       
-    }
 })();
