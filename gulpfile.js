@@ -10,19 +10,25 @@ var gulp = require('gulp'),
 
 var config = {
     css: {
-        sassPath: './public/resources/scss/styles/',
-        sassImportsPath: './public/resources/scss/imports/',
+        sassPath: './public/scss/styles/',
+        sassImportsPath: './public/scss/imports/',
          bowerDir: './bower_components/' ,
-        cssDestPath: './public/resources/css/'
+        cssDestPath: './public/css/'
     },
     js: {
-        jsDestBasePath: './public/resources/js/',
-        jsAppPath: 'app/',
+        jsDestBasePath: './public/js/',
+        jsAppPath: './app/**/',
         jsVendorPath: 'vendor/',
         jqueryPath: './bower_components/jquery/dist/',
-        bootstrapPath: './bower_components/bootstrap-sass-official/assets/javascripts/'
+        bootstrapPath: './bower_components/bootstrap-sass-official/assets/javascripts/',
+        angularPath: './bower_components/angular/',
+        angularUIPath: './bower_components/angular-ui-router/release/'
     }
-}
+};
+
+var src = {
+    js: [config.js.jqueryPath + 'jquery.min.js', config.js.bootstrapPath + 'bootstrap.min.js', config.js.angularPath + 'angular.min.js', config.js.angularUIPath + 'angular-ui-router.min.js', config.js.jsAppPath + '*.js']
+};
 
 var onError = function(err) {
     console.log(err);
@@ -80,10 +86,15 @@ gulp.task('css-prod', function() { 
  * single file in js/
  */
 gulp.task('js-dev', function() {
-    return gulp.src([config.js.jqueryPath + 'jquery.min.js', config.js.bootstrapPath + 'bootstrap.min.js', config.js.jsDestBasePath + config.js.jsAppPath + '*.js'])
+    var filter = gulpFilter(['*', '!jquery.min.js', '!bootstrap.min.js', '!angular*.js'], {restore:true});
+    var js = gulp.src(src.js)
         .pipe(plumber())
+        //.pipe(filter)
         .pipe(concat('app.js'))
+        //.pipe(filter.restore)
         .pipe(gulp.dest(config.js.jsDestBasePath));
+
+    return js;
 });
 
 /**
@@ -91,8 +102,8 @@ gulp.task('js-dev', function() {
  * single file in js/
  */
 gulp.task('js-prod', function() {
-    var filter = gulpFilter(['*', '!jquery.min.js', '!bootstrap.min.js'], {restore:true});
-    var js = gulp.src([config.js.jqueryPath + 'jquery.min.js', config.js.bootstrapPath + 'bootstrap.min.js', config.js.jsDestBasePath + config.js.jsAppPath + '*.js'])
+    var filter = gulpFilter(['*', '!jquery.min.js', '!bootstrap.min.js', '!angular*.js'], {restore:true});
+    var js = gulp.src(src.js)
         .pipe(plumber())
         .pipe(filter)
         .pipe(uglify())
@@ -109,7 +120,7 @@ gulp.task('js-prod', function() {
 gulp.task('watch', function() { 
     gulp.watch(config.css.sassPath + '**/*.scss',{ interval: 500 }, ['css-dev', 'css-prod']); 
     gulp.watch(config.css.sassImportsPath + '**/*.scss',{ interval: 500 }, ['css-dev', 'css-prod']); 
-    gulp.watch(config.js.jsDestBasePath + config.js.jsAppPath + '*.js',{ interval: 500 }, ['js-dev', 'js-prod']);
+    gulp.watch(config.js.jsAppPath + '*.js',{ interval: 500 }, ['js-dev', 'js-prod']);
 });
 
 /**
