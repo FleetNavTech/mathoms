@@ -11,7 +11,7 @@
 		$stateProvider
 
 		.state('app', {
-			url: '/app',
+			url: '',
 			abstract: true,
 			templateUrl: 'app/templates/base.html',
 			controller: 'BaseCtrl as Base'
@@ -24,6 +24,6 @@
 		})
 
 		// if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/login');
+        $urlRouterProvider.otherwise('/login');
 	}
 })();
